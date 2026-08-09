@@ -1,76 +1,86 @@
-
 function getComputerChoice() {
-  const choices = ["rock", "paper", "scissors"];
-  const randomIndex = Math.floor(Math.random() * choices.length);
-  return choices[randomIndex];
+    const choices = ["rock", "paper", "scissors"];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
 }
 
-function getHumanChoice() {
-    let input = prompt("Enter your Choice:");
-    console.log("Your Move: " + input)
-    input = input.toLowerCase();
-    if( input !== "rock" && input !== "paper" && input !== "scissors") {
-        return "ERROR, Please Enter Proper Input"
-    }
-
-        return input;
-
-}
-
-let humanScore = 0;
-let computerScore = 0;
-let roundsPlayed = 0;
 
 
 function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+    let gameOver = false;
+    
+    const result = document.querySelector("#result");
+
+    const rockButton = document.querySelector("#rock");
+    const paperButton = document.querySelector("#paper");
+    const scissorsButton = document.querySelector("#scissors");
+    const resetButton = document.querySelector("#reset");
+
+    rockButton.addEventListener("click", function() {  
+    const computerChoice = getComputerChoice();
+    playRound("rock", computerChoice); });
+
+    paperButton.addEventListener("click", function() {  
+    const computerChoice = getComputerChoice();
+    playRound("paper", computerChoice); });
+
+    scissorsButton.addEventListener("click", function() {  
+    const computerChoice = getComputerChoice();
+    playRound("scissors", computerChoice); });
+
+    resetButton.addEventListener("click", function () {
+    humanScore = 0;
+    computerScore = 0;
+    gameOver = false;
+
+    result.innerHTML =
+        "Choose Your Weapon<br>" +
+        "Human: 0<br>" +
+        "Computer: 0";
+});
 
     function playRound(humanChoice, computerChoice) {
-   
-    if ( humanChoice === computerChoice ) {
-        return ("Tie!");
-    }
+          if( gameOver === true) {
+            return;
+          }
+          
 
-    else if( humanChoice === "rock" && computerChoice === "scissors" || 
-            
-        humanChoice === "paper" && computerChoice === "rock" || 
-        
-        humanChoice === "scissors" && computerChoice === "paper") {
-        humanScore++;
-        return ("Human Wins");
-       
-    }
 
-    else { computerScore++; 
-        return("Computer wins");
+
+        if (humanChoice === computerChoice) {
+            result.innerHTML = "Tie<br>" + "Human: " + humanScore + "<br>" +  "Computer: " + computerScore;
+            return;
         }
 
-    } 
+        else if (
+            (humanChoice === "rock" && computerChoice === "scissors") ||
 
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    console.log("Computer's Move: " + computerSelection);
-    const result = playRound(humanSelection, computerSelection);
-    console.log(result);
-    console.log("Human:", humanScore);
-    console.log("Computer:", computerScore);
+            (humanChoice === "paper" && computerChoice === "rock") ||
 
-    roundsPlayed++;
-    
-    if (roundsPlayed === 5) {
-    if (humanScore > computerScore) {
-        console.log("Human Wins the Game!");
-    } else if (computerScore > humanScore) {
-        console.log("Computer Wins the Game!");
-    } else {
-        console.log("It's a Tie!");
+            (humanChoice === "scissors" && computerChoice === "paper")
+        ) {
+            humanScore++;
+            result.innerHTML = "Human Wins<br>" + "Human: " + humanScore + "<br>" +  "Computer: " + computerScore;
+        }
+        else {
+            computerScore++;
+            result.innerHTML = "Computer Wins<br>" +    "Human: " + humanScore + "<br>" + "Computer: " + computerScore;
+        }
+
+        if( humanScore === 5 ) {
+        gameOver = true;
+       result.innerHTML= "Human Wins the Game<br>" +    "Human: " + humanScore + "<br>" + "Computer: " + computerScore;
     }
-}
 
-}
+        else if(computerScore === 5) {
+        gameOver = true;
+        result.innerHTML = "Computer Wins the game<br>" +    "Human: " + humanScore + "<br>" + "Computer: " + computerScore;
+
+    }
+    }
+
+    }
 
 playGame();
-playGame();
-playGame();
-playGame();
-playGame();
-
